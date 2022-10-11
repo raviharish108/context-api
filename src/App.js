@@ -1,6 +1,7 @@
 import logo from './logo.svg';
+import { Routes, Route, Link } from "react-router-dom";
 import './App.css';
-import { createContext, useContext, useState } from 'react';
+import {  createContext, useContext, useState } from 'react';
 //props drilling example....
 // function App() {
 //   let[like,setlike]=useState(0);
@@ -59,27 +60,93 @@ import { createContext, useContext, useState } from 'react';
 //   )
 // }
 
+ //3.props drilling chenge the color mode
+// function App() {
+//   const[mode,setmode]=useState("light");
+//   const style={
+//     background:mode==="light"?"white":"black"
+//   }
+//   return (
+//    <div style={style}>
+//       <App1 mode1={mode} setmode1={setmode}/>
+//    </div>
+//   );
+// }
+
+// function App1({mode1,setmode1}){
+//   return(
+//   <div>
+//     <App2 mode2={mode1} setmode2={setmode1}/>
+//   </div>
+//   )
+// }
+
+// function App2({mode2,setmode2}){
+//   const buttonstyle={
+//     background:mode2==="light" ? "black":"white",
+//     color: mode2==="light" ? "white" : "black",
+//     margin:"5px",
+//     padding:"10px"
+//   }
+//   return(
+//     <div>
+//       <ul>
+//         <li>
+//           <button style={buttonstyle} onClick={()=>setmode2("light")} value={mode2}>light</button>
+//         </li>
+//         <li>
+//           <button style={buttonstyle} onClick={()=>setmode2("dark")} value={mode2}>dark</button>
+//         </li>
+//       </ul>
+//     </div>
+//   )
+// }
+
+// context change color mode
 function App() {
-    const[state,setstate]=useState("light");
-    const styless={
-        background:state === "light" ? "white" : "black",
-        hight:"500px",
-        width:"500px",
-        border:"1px solid black"
-    }
-    const buttonstyle={
-        background:state === "light" ? "black" : "white",
-        color:state === "light" ? "white" : "black",
-        margin:"10px"
-    
-    }
-    return (
-      <div  style={styless}>
-        <ul>
-        <li> <button style={buttonstyle} onClick={()=>setstate("light")} value={state}> light mode</button></li>
-        <li> <button style={buttonstyle} onClick={()=>setstate("dark")} value={state}> dark mode</button></li>
-         </ul>
-      </div>
-          );
-                }
+  const[mode,setmode]=useState("light");
+  const value1={Mode:mode,Setmode:setmode};
+  const style1={
+    background:mode==="light" ? "white" : "black"
+  }
+  return (
+    <context.Provider value={value1}>
+          <div style={style1}> 
+             <App1/>  
+          </div> 
+     </context.Provider>
+  
+  );
+}
+function App1(){
+  return(
+    <div>
+       <App2/>
+    </div>
+  )
+}
+const context=createContext();
+ function App2(){
+  const{Mode,Setmode}=useContext(context)
+  const buttonstyle={
+      background:Mode==="light" ? "black" : "white",
+      color:Mode==="light" ? "white" : "black",
+      margin:"5px",
+      padding:"10px"
+  }
+  return(
+    <div>
+      <ul>
+        <li>
+          <button style={buttonstyle} onClick={()=>Setmode("light")} >light</button>
+        </li>
+        <li>
+          <button style={buttonstyle} onClick={()=>Setmode("dark")}>dark</button>
+        </li>
+      </ul>
+
+    </div>
+  )
+ }
+
 export default App;
